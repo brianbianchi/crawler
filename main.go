@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/gocolly/colly"
@@ -13,7 +14,12 @@ func main() {
 	depth := flag.Int("d", 2, "Depth to crawl.")
 	flag.Parse()
 
-	// allowed_domains := []string{*url}
+	if *url == "" {
+		fmt.Println("Please specify base url.")
+		os.Exit(0)
+	}
+
+	allowed_domains := []string{*url}
 
 	fmt.Println(*url)
 	// Instantiate default collector
@@ -21,7 +27,7 @@ func main() {
 		// default user agent header
 		colly.UserAgent("Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0"),
 		// limit crawling to the domain of the specified URL
-		// colly.AllowedDomains(allowed_domains...),
+		colly.AllowedDomains(allowed_domains...),
 		// set MaxDepth to the specified depth
 		colly.MaxDepth(*depth),
 	)
